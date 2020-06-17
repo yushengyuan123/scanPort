@@ -4,17 +4,20 @@ import com.web.ipInfo.ipInfo;
 import com.web.socket.socket;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class dealSingle {
-    public static ipInfo[] querySingleSocket(String address, int port) throws IOException {
-        //true代表扫描成功，false，代表扫描不成功
-        ipInfo[] array = new ipInfo[1];
-        ipInfo info = null;
+    public static List<ipInfo> querySingleSocket(String address, int port) throws IOException {
+        List<ipInfo> list = new ArrayList<>();
         int scanResult = socket.scan(address, port);
+
         if (scanResult == 1) {
-            info = new ipInfo(address, port, true,"未知", "TCP");
+            list.add(new ipInfo(address, port, true,"未知", "TCP"));
+        } else if (scanResult == -1) {
+            list.add(new ipInfo(address, port, true,"未知", "UDP"));
         }
-        array[0] = info;
-        return array;
+
+        return list;
     }
 }

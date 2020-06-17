@@ -1,9 +1,9 @@
-package com.web.post;
+package com.web.severlet;
 
-import com.google.gson.Gson;
 import com.web.service.dealSingle;
 import com.web.ipInfo.ipInfo;
 import com.web.response.allRes;
+import com.web.service.verify;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @WebServlet(name = "/single")
 public class singleScan extends HttpServlet {
@@ -25,10 +26,27 @@ public class singleScan extends HttpServlet {
     private void singlePort(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String address = request.getParameter("address");
         String port = request.getParameter("port");
-        ipInfo[] info = dealSingle.querySingleSocket(address, Integer.parseInt(port));
-        allRes res = new allRes("1", "success", info);
         PrintWriter writer = response.getWriter();
-        Gson gson = new Gson();
-        writer.write(gson.toJson(res));
+
+        //地址检验
+        try {
+            verify.verifyAddress(address);
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            writer.write(allRes.resList("-1", exception.getMessage(), null));
+            return;
+        }
+
+        try {
+            verify.verifyPort(port);
+        } catch (Exception exception) {
+            System.out.println(exception.toString());
+            writer.write(allRes.resList("-1", exception.getMessage(), null));
+            return;
+        }
+
+        List<ipInfo> result = dealSingle.querySingleSocket(address, Integer.parseInt(port));
+
+        writer.write(allRes.resList("1", "success", result ));
     }
 }

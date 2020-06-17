@@ -2,9 +2,13 @@ package com.web.ipInfo;
 
 public class ipInfo {
     private String ipAddress;
+
     private int port;
+
     private final String service;
+
     private final String agreement;
+
     private final boolean status;
 
     public ipInfo(String address, int port, boolean status, String service, String agreement) {

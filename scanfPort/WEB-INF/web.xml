@@ -3,33 +3,33 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0"
          metadata-complete="true">
     <servlet>
-        <servlet-name>serverLet</servlet-name>
-        <servlet-class>com.web.serverLet.serverLet</servlet-class>
+        <servlet-name>multiScan</servlet-name>
+        <servlet-class>com.web.severlet.multiScan</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>serverLet</servlet-name>
-        <url-pattern>/serverLet</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>post</servlet-name>
-        <servlet-class>com.web.post.post</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>post</servlet-name>
-        <url-pattern>/post</url-pattern>
+        <servlet-name>multiScan</servlet-name>
+        <url-pattern>/multiScan</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>single</servlet-name>
-        <servlet-class>com.web.post.singleScan</servlet-class>
+        <servlet-class>com.web.severlet.singleScan</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>single</servlet-name>
         <url-pattern>/single</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addressPhaseScan</servlet-name>
+        <servlet-class>com.web.severlet.addressPhaseScan</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addressPhaseScan</servlet-name>
+        <url-pattern>/addressPhaseScan</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -30,7 +30,7 @@ public class constValue {
     /**
      * 单次处理端口的最大值
      */
-    public static final Integer MAX_JOB = 150;
+    public static final Integer MAX_JOB = 10000;
 
 
     /**
