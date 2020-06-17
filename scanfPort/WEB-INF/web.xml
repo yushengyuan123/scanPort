@@ -22,4 +22,14 @@
         <url-pattern>/post</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>single</servlet-name>
+        <servlet-class>com.web.post.singleScan</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>single</servlet-name>
+        <url-pattern>/single</url-pattern>
+    </servlet-mapping>
+
 </web-app>
