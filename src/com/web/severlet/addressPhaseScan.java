@@ -3,6 +3,7 @@ package com.web.severlet;
 import com.web.ipInfo.ipInfo;
 import com.web.response.allRes;
 import com.web.service.mutiScan;
+import com.web.service.phase;
 import com.web.service.verify;
 import utils.ipStatistic;
 
@@ -34,7 +35,31 @@ public class addressPhaseScan extends HttpServlet {
         String port = request.getParameter("port");
         PrintWriter writer = response.getWriter();
 
-        List<String> resultIP = ipStatistic.findIPs(startAddress, endAddress);
-        writer.write(allRes.resList("1", "success", resultIP));
+//        try {
+//            verify.verifyAddress(startAddress);
+//        } catch (Exception exception) {
+//            System.out.println(exception.getMessage());
+//            writer.write(allRes.resList("-1", exception.getMessage(), null));
+//            return;
+//        }
+//
+//        try {
+//            verify.verifyAddress(endAddress);
+//        } catch (Exception exception) {
+//            System.out.println(exception.getMessage());
+//            writer.write(allRes.resList("-1", exception.getMessage(), null));
+//            return;
+//        }
+
+        try {
+            verify.verifyPort(port);
+        } catch (Exception exception) {
+            System.out.println(exception.toString());
+            writer.write(allRes.resList("-1", exception.getMessage(), null));
+            return;
+        }
+
+        List<ipInfo> result =  phase.dealPhase(startAddress, endAddress, Integer.parseInt(port));
+        writer.write(allRes.resList("1", "success", result));
     }
 }

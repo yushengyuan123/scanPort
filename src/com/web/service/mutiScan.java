@@ -1,10 +1,16 @@
 package com.web.service;
 
+import com.web.dao.taskDao;
+import com.web.enumeration.jobCharacter;
 import com.web.ipInfo.ipInfo;
 
+import com.web.ipInfo.job;
 import com.web.socket.socket;
+import com.web.task.task;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -25,7 +31,7 @@ public class mutiScan {
                         if (success == 1) {
                             scanResults.add(new ipInfo(address, finalI, true, "未知", "TCP"));
                         } else if (success == -1) {
-                            scanResults.add(new ipInfo(address, finalI, true, "未知", "UCP"));
+                            scanResults.add(new ipInfo(address, finalI, true, "未知", "UDP"));
                         }
 
                     } catch (IOException e) {
@@ -48,5 +54,28 @@ public class mutiScan {
         System.out.println("list长度" + scanResults.size());
 
         return scanResults;
+    }
+
+    public static boolean test(String address, String startPort, String endPort) throws SQLException {
+        ResultSet res = taskDao.getTaskList();
+
+        if (res != null) {
+            int taskSize = res.getRow();
+            task multiTask = new task(taskSize);
+            job multiJob = new job(address, null, startPort, endPort, jobCharacter.MULTIPORT);
+
+            if (multiTask.addTask(multiJob)) {
+                //任务添加成功，写入数据库
+                taskDao.addTask(multiTask);
+                //添加完任务然后开始交给另外的线程进行处理
+                multiTask.doScan();
+                return true;
+            } else {
+                System.out.println("任务添加失败");
+            }
+        } else {
+            System.out.println("sql结果集合返回为空");
+        }
+        return false;
     }
 }

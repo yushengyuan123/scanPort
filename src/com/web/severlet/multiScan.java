@@ -7,12 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.web.ipInfo.job;
 import com.web.service.mutiScan;
 import com.web.ipInfo.ipInfo;
 import com.web.response.allRes;
 import com.web.service.verify;
+import com.web.task.task;
 
 @WebServlet(name = "/multiScan")
 public class multiScan extends HttpServlet {
@@ -21,8 +24,8 @@ public class multiScan extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-Type", "application/json");
         try {
-            dealMultiScan(request, response);
-        } catch (InterruptedException e) {
+            addMultiTask(request, response);
+        } catch (InterruptedException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -70,6 +73,20 @@ public class multiScan extends HttpServlet {
 
         List<ipInfo> a = mutiScan.startScan(address, start, end);
         writer.write(allRes.resList("1", "success", a));
+    }
+
+    public void addMultiTask(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, SQLException, IOException {
+        String address = request.getParameter("address");
+        String startPort = request.getParameter("startPort");
+        String endPort = request.getParameter("endPort");
+        PrintWriter writer = response.getWriter();
+
+        /** 数据录入成功之后向前端返回 */
+        if (mutiScan.test(address, startPort, endPort)) {
+            writer.write(allRes.resList("1", "添加任务成功", null));
+        } else {
+            writer.write(allRes.resList("-1", "添加任务失败", null));
+        }
     }
 }
 
