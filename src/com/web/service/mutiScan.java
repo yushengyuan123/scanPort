@@ -56,26 +56,20 @@ public class mutiScan {
         return scanResults;
     }
 
-    public static boolean test(String address, String startPort, String endPort) throws SQLException {
-        ResultSet res = taskDao.getTaskList();
-
-        if (res != null) {
-            int taskSize = res.getRow();
-            task multiTask = new task(taskSize);
-            job multiJob = new job(address, null, startPort, endPort, jobCharacter.MULTIPORT);
+    public static boolean test(String address, String startPort, String endPort) throws SQLException, ClassNotFoundException {
+            task multiTask = new task(jobCharacter.MULTIPORT);
+            job multiJob = new job(address, null, null, startPort, endPort, jobCharacter.MULTIPORT);
+            taskDao taskDao = new taskDao();
 
             if (multiTask.addTask(multiJob)) {
                 //任务添加成功，写入数据库
-                taskDao.addTask(multiTask);
+                int id = taskDao.addTask(multiTask);
                 //添加完任务然后开始交给另外的线程进行处理
-                multiTask.doScan();
+                multiTask.doMultiScan(id);
                 return true;
             } else {
                 System.out.println("任务添加失败");
             }
-        } else {
-            System.out.println("sql结果集合返回为空");
-        }
         return false;
     }
 }

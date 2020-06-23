@@ -1,16 +1,38 @@
 package com.web.service;
 
+import com.web.dao.taskDao;
+import com.web.enumeration.jobCharacter;
 import com.web.ipInfo.ipInfo;
+import com.web.ipInfo.job;
 import com.web.socket.socket;
+import com.web.task.task;
 import utils.ipStatistic;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 public class phase {
-    public static List<ipInfo> dealPhase(String startAddress, String endAddress , int port) throws InterruptedException {
+    public static boolean addPhaseTask(String startAddress, String endAddress , String startPort, String endPort) throws SQLException, ClassNotFoundException {
+        task phaseTask = new task(jobCharacter.MULTIADDRESS);
+        job phaseJob = new job(startAddress, endAddress, null, startPort, endPort, jobCharacter.MULTIADDRESS);
+        taskDao taskDao = new taskDao();
+
+        if (phaseTask.addTask(phaseJob)) {
+            //任务添加成功，写入数据库
+            int id = taskDao.addTask(phaseTask);
+            //添加完任务然后开始交给另外的线程进行处理
+            phaseTask.doPhase(id);
+            return true;
+        } else {
+            System.out.println("任务添加失败");
+            return false;
+        }
+    }
+
+    public static List<ipInfo> dealPhase(String startAddress, String endAddress , int port, int endPort) throws InterruptedException {
         List<ipInfo> availableIp = new ArrayList<>();
         List<String> reachAbleList;
         Vector<Thread> threadVector = new Vector<Thread>();

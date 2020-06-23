@@ -25,7 +25,7 @@ public class multiScan extends HttpServlet {
         response.setHeader("Content-Type", "application/json");
         try {
             addMultiTask(request, response);
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -75,7 +75,7 @@ public class multiScan extends HttpServlet {
         writer.write(allRes.resList("1", "success", a));
     }
 
-    public void addMultiTask(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, SQLException, IOException {
+    public void addMultiTask(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, SQLException, IOException, ClassNotFoundException {
         String address = request.getParameter("address");
         String startPort = request.getParameter("startPort");
         String endPort = request.getParameter("endPort");

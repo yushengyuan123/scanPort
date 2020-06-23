@@ -1,8 +1,11 @@
 package com.web.ipInfo;
 
 public class job {
-
+    //起始ip地址
     private String ip;
+
+    //终点ip地址
+    private String endIp;
 
     private String port;
 
@@ -11,12 +14,13 @@ public class job {
     private int portMax;
 
     //任务性质
-    private String character = null;
+    private String character;
 //
 //    private String multiPort;
 
-    public job(String ip, String port, String portMin, String portMax, String character) {
+    public job(String ip, String endAddress, String port, String portMin, String portMax, String character) {
         this.ip = ip;
+        this.endIp = endAddress;
         this.port = port;
         this.portMin = Integer.parseInt(portMin);
         this.portMax = Integer.parseInt(portMax);
@@ -45,5 +49,11 @@ public class job {
 
     public String getCharacter() {
         return character;
+    }
+
+    public void setCharacter(String sort) { this.character = sort; }
+
+    public String getEndIp() {
+        return endIp;
     }
 }

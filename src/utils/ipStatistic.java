@@ -56,7 +56,7 @@ public class ipStatistic {
         long startNumber = ipv4ToNumber(startIp);
         long endNumber = ipv4ToNumber(endIp);
         List<String> ips = new ArrayList<String>();
-        while (startNumber - endNumber < 0) {
+        while (startNumber - endNumber <= 0) {
             ips.add(numberToIpv4(startNumber));
             startNumber++;
         }

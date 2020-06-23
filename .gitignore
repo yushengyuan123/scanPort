@@ -4,7 +4,7 @@ node_modules
 oss.config.js
 /platforms
 /out
-/src/com/web/dao/connectMysql
+/src/com/web/dao/connectMysql.java
 /.idea
 
 # local env files

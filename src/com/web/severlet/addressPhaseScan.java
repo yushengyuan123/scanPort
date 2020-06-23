@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "/addressPhaseScan")
@@ -23,16 +24,33 @@ public class addressPhaseScan extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-Type", "application/json");
         try {
-            dealAddressPhaseScan(request, response);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            dealPhaseScan(request, response);
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void dealPhaseScan(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException, ClassNotFoundException {
+        String startAddress = request.getParameter("startAddress");
+        String endAddress = request.getParameter("endAddress");
+        String port = request.getParameter("startPort");
+        String endPort = request.getParameter("endPort");
+        PrintWriter writer = response.getWriter();
+
+
+        /** 数据录入成功之后向前端返回 */
+        if (phase.addPhaseTask(startAddress, endAddress, port, endPort)) {
+            writer.write(allRes.resList("1", "添加任务成功", null));
+        } else {
+            writer.write(allRes.resList("-1", "添加任务失败", null));
         }
     }
 
     public void dealAddressPhaseScan(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
         String startAddress = request.getParameter("startAddress");
         String endAddress = request.getParameter("endAddress");
-        String port = request.getParameter("port");
+        String port = request.getParameter("startPort");
+        String endPort = request.getParameter("endPort");
         PrintWriter writer = response.getWriter();
 
 //        try {
@@ -59,7 +77,7 @@ public class addressPhaseScan extends HttpServlet {
             return;
         }
 
-        List<ipInfo> result =  phase.dealPhase(startAddress, endAddress, Integer.parseInt(port));
+        List<ipInfo> result =  phase.dealPhase(startAddress, endAddress, Integer.parseInt(port), Integer.parseInt(endPort));
         writer.write(allRes.resList("1", "success", result));
     }
 }

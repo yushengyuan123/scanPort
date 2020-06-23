@@ -14,8 +14,10 @@ public class dealSingle {
 
         if (scanResult == 1) {
             list.add(new ipInfo(address, port, true,"未知", "TCP"));
-        } else if (scanResult == -1) {
+        } else if (scanResult == 0) {
             list.add(new ipInfo(address, port, true,"未知", "UDP"));
+        } else {
+            list.add(new ipInfo(address, port, false,"未知", "未知"));
         }
 
         return list;
