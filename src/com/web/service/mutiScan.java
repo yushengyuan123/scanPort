@@ -66,6 +66,7 @@ public class mutiScan {
                 int id = taskDao.addTask(multiTask);
                 //添加完任务然后开始交给另外的线程进行处理
                 multiTask.doMultiScan(id);
+                taskDao.close();
                 return true;
             } else {
                 System.out.println("任务添加失败");

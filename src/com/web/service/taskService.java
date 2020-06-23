@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class taskService {
-    //todo 这段代码阻塞了
     public List getTask() throws SQLException, ClassNotFoundException {
         List list = new ArrayList();
         taskDao dao = new taskDao();
@@ -37,7 +36,8 @@ public class taskService {
             }
             list.add(rowData);
         }
-        rs.close();
+
+        dao.close();
 
         return list;
     }
@@ -58,7 +58,8 @@ public class taskService {
             }
             list.add(rowData);
         }
-        rs.close();
+
+        jobDao.close();
         return list;
     }
 }

@@ -37,6 +37,24 @@ public class addressPhaseScan extends HttpServlet {
         String endPort = request.getParameter("endPort");
         PrintWriter writer = response.getWriter();
 
+        try {
+            verify.verifyPort(port);
+            verify.verifyPort(endPort);
+        } catch (Exception exception) {
+            System.out.println(exception.toString());
+            writer.write(allRes.resList("-1", exception.getMessage(), null));
+            return;
+        }
+
+        int start = Integer.parseInt(port);
+        int end = Integer.parseInt(endPort);
+
+        try {
+            verify.rangeERROR(start, end);
+        } catch (Exception exception) {
+            writer.write(allRes.resList("-1", exception.getMessage(), null));
+            return;
+        }
 
         /** 数据录入成功之后向前端返回 */
         if (phase.addPhaseTask(startAddress, endAddress, port, endPort)) {
@@ -44,40 +62,5 @@ public class addressPhaseScan extends HttpServlet {
         } else {
             writer.write(allRes.resList("-1", "添加任务失败", null));
         }
-    }
-
-    public void dealAddressPhaseScan(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
-        String startAddress = request.getParameter("startAddress");
-        String endAddress = request.getParameter("endAddress");
-        String port = request.getParameter("startPort");
-        String endPort = request.getParameter("endPort");
-        PrintWriter writer = response.getWriter();
-
-//        try {
-//            verify.verifyAddress(startAddress);
-//        } catch (Exception exception) {
-//            System.out.println(exception.getMessage());
-//            writer.write(allRes.resList("-1", exception.getMessage(), null));
-//            return;
-//        }
-//
-//        try {
-//            verify.verifyAddress(endAddress);
-//        } catch (Exception exception) {
-//            System.out.println(exception.getMessage());
-//            writer.write(allRes.resList("-1", exception.getMessage(), null));
-//            return;
-//        }
-
-        try {
-            verify.verifyPort(port);
-        } catch (Exception exception) {
-            System.out.println(exception.toString());
-            writer.write(allRes.resList("-1", exception.getMessage(), null));
-            return;
-        }
-
-        List<ipInfo> result =  phase.dealPhase(startAddress, endAddress, Integer.parseInt(port), Integer.parseInt(endPort));
-        writer.write(allRes.resList("1", "success", result));
     }
 }

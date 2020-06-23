@@ -28,4 +28,8 @@ public class taskDao {
         connectMysql.update(sql, con);
     }
 
+    public void close() throws SQLException {
+        con.close();
+    }
+
 }

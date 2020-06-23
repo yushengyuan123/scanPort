@@ -42,4 +42,8 @@ public class jobDao {
         String sql = "select * from job_" + taskId;
         return connectMysql.select(sql, con);
     }
+
+    public void close() throws SQLException {
+        con.close();
+    }
 }

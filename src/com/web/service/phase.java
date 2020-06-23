@@ -25,6 +25,7 @@ public class phase {
             int id = taskDao.addTask(phaseTask);
             //添加完任务然后开始交给另外的线程进行处理
             phaseTask.doPhase(id);
+            taskDao.close();
             return true;
         } else {
             System.out.println("任务添加失败");

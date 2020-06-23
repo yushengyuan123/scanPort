@@ -30,7 +30,7 @@ public class multiScan extends HttpServlet {
         }
     }
 
-    public void dealMultiScan(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+    public void addMultiTask(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, SQLException, IOException, ClassNotFoundException {
         String address = request.getParameter("address");
         String startPort = request.getParameter("startPort");
         String endPort = request.getParameter("endPort");
@@ -70,16 +70,6 @@ public class multiScan extends HttpServlet {
             writer.write(allRes.resList("-1", exception.getMessage(), null));
             return;
         }
-
-        List<ipInfo> a = mutiScan.startScan(address, start, end);
-        writer.write(allRes.resList("1", "success", a));
-    }
-
-    public void addMultiTask(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, SQLException, IOException, ClassNotFoundException {
-        String address = request.getParameter("address");
-        String startPort = request.getParameter("startPort");
-        String endPort = request.getParameter("endPort");
-        PrintWriter writer = response.getWriter();
 
         /** 数据录入成功之后向前端返回 */
         if (mutiScan.test(address, startPort, endPort)) {

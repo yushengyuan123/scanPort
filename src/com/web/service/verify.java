@@ -19,7 +19,7 @@ public class verify {
             throw new RuntimeException("端口输入不能为空");
         }
         if (!port.matches("^[+-]?[0-9]+$")) {
-            throw new RuntimeException("请输入数字");
+            throw new RuntimeException("请输入正确格式的端口号");
         }
         int IntPort = Integer.parseInt(port);
         if (IntPort <= 0 || IntPort > constValue.MAX_PORT) {
@@ -30,6 +30,8 @@ public class verify {
     public static void rangeERROR(int start, int end) {
         if (end - start > constValue.MAX_JOB) {
             throw new RuntimeException("扫描端口数量不能超过10000");
+        } else if (end - start < 0) {
+            throw new RuntimeException("终止端口号要大于起始端口号");
         }
     }
 }
